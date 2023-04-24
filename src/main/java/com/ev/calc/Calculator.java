@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * @description:
@@ -58,6 +60,7 @@ public class Calculator {
         preResult = preResult == null ? BigDecimal.ZERO : preResult;
         if(curOperator == null){
             System.out.println("请选择操作!");
+            return;
         }
         if(newNum != null){ // 新输入值
             // 累加计算
@@ -188,27 +191,44 @@ public class Calculator {
 
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
-        calculator.setNewNum(new BigDecimal(9.19));
-        calculator.setCurOperator("*");
-        calculator.setNewNum(new BigDecimal(5.50));
-        calculator.display();
-        calculator.calc();
-        calculator.display();
-        calculator.setCurOperator("/");
-        calculator.setNewNum(new BigDecimal(2));
-        calculator.display();
-        calculator.calc();
-        calculator.display();
 
-        calculator.undo();
-        calculator.display();
-        calculator.undo();
-        calculator.display();
-        calculator.redo();
-        calculator.display();
-        calculator.redo();
-        calculator.display();
+        System.out.println("请输入一个数：");
+        Scanner scanner1 = new Scanner(System.in);
+        double a = scanner1.nextDouble();
+        calculator.setNewNum(new BigDecimal(a));
+
+        while(true){
+            Scanner scanner2 = new Scanner(System.in);
+            System.out.println("你可以输入的操作有：加(+)减(-)乘(*)除(/)redo/undo/结束(小写的end)--->");
+            String str = scanner2.nextLine();
+            switch (str){
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                    calculator.setCurOperator(str);
+                    System.out.println("请输入一个数：");
+                    Scanner scanner3 = new Scanner(System.in);
+                    double b = scanner3.nextDouble();
+                    calculator.setNewNum(new BigDecimal(b));
+                    calculator.display();
+                    calculator.calc();
+                    calculator.display();
+                    break;
+                case "undo":
+                    calculator.undo();
+                    break;
+                case "redo":
+                    calculator.redo();
+                    break;
+                case "end":
+                    System.exit(-1);
+                    break;
+                default:
+                    System.out.println("输入的字符有误！");
+            }
+
+        }
 
     }
-
 }
